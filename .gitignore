@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+
+# Environment
+.env
+*.env
+
+# Cache (pipeline)
+.cache/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Database
+*.sqlite
+*.db
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid

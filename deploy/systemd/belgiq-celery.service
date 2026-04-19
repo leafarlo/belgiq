@@ -1,0 +1,43 @@
+# ── belgiq-worker.service ─────────────────────────────────────────────────────
+# Celery worker (executes pipeline tasks)
+# Install: cp deploy/systemd/belgiq-worker.service /etc/systemd/system/
+#          systemctl enable belgiq-worker && systemctl start belgiq-worker
+
+[Unit]
+Description=BelgiQ Celery Worker
+After=network.target redis.service postgresql.service
+
+[Service]
+User=belgiq
+WorkingDirectory=/var/www/belgiq
+Environment="PATH=/var/www/belgiq/venv/bin"
+EnvironmentFile=/var/www/belgiq/.env
+ExecStart=/var/www/belgiq/venv/bin/celery -A pipeline.tasks worker --loglevel=info --logfile=/var/log/belgiq/worker.log
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+
+---
+
+# ── belgiq-beat.service ───────────────────────────────────────────────────────
+# Celery beat (triggers scheduled tasks)
+# Install: cp deploy/systemd/belgiq-beat.service /etc/systemd/system/
+#          systemctl enable belgiq-beat && systemctl start belgiq-beat
+
+[Unit]
+Description=BelgiQ Celery Beat Scheduler
+After=network.target redis.service
+
+[Service]
+User=belgiq
+WorkingDirectory=/var/www/belgiq
+Environment="PATH=/var/www/belgiq/venv/bin"
+EnvironmentFile=/var/www/belgiq/.env
+ExecStart=/var/www/belgiq/venv/bin/celery -A pipeline.tasks beat --loglevel=info --logfile=/var/log/belgiq/beat.log
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
