@@ -1,6 +1,6 @@
 # BelgiQ
 
-Belgian civic transparency platform — making politics clear for every citizen.
+Belgian civic transparency platform, with the goal of making politics clear for every (Belgian) citizen. Still in Beta mode. I want to present a cristal clear view of the financials and politics of the Belgian governement. Where does all the money go, who spends it, who is in charge and what are they doing?
 
 ## Stack
 
@@ -11,7 +11,7 @@ Belgian civic transparency platform — making politics clear for every citizen.
 | Database | PostgreSQL | All structured data |
 | Scheduler | Celery + Redis | Weekly pipeline runs |
 | Web server | Nginx | Reverse proxy + static file serving |
-| Server | Hetzner CX22 | €4.51/month, everything runs here |
+| Server | Hetzner CX22 | everything runs here |
 
 ## Project Structure
 
@@ -43,36 +43,4 @@ belgiq/
 └── .env.example       # Environment variables template
 ```
 
-## Quick Start (local development)
 
-```bash
-# 1. Clone and enter project
-git clone https://github.com/you/belgiq && cd belgiq
-
-# 2. Backend
-python -m venv venv && source venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env   # fill in your values
-
-# 3. Database (needs PostgreSQL running locally)
-psql -U postgres -c "CREATE DATABASE belgiq;"
-psql -U postgres -d belgiq -f schema.sql
-
-# 4. Start API
-uvicorn api.main:app --reload --port 8000
-
-# 5. Start Celery worker (separate terminal)
-celery -A pipeline.tasks worker --loglevel=info
-
-# 6. Frontend
-cd frontend && npm install && npm run dev
-```
-
-## Deployment (Hetzner)
-
-See `deploy/` folder. Full instructions in `deploy/README.md`.
-
-Run once on your server:
-```bash
-curl -fsSL https://raw.githubusercontent.com/you/belgiq/main/deploy/setup.sh | bash
-```
